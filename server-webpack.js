@@ -3,6 +3,9 @@ const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.config');
 
 new WebpackDevServer(webpack(config), {
+  proxy: {
+    '**': { target: 'http://localhost:3000', secure: false },
+  },
   contentBase: config.output.path,
   colors: true,
   historyApiFallback: true,
@@ -12,8 +15,8 @@ new WebpackDevServer(webpack(config), {
   progress: true,
   quiet: false,
   stats: 'minimal',
-}).listen(3000, 'localhost', (err) => {
+}).listen(8080, 'localhost', (err) => {
   if (err) return console.log(err);
 
-  console.log('Listening at http://localhost:3000/');
+  console.log('Listening at http://localhost:8080/');
 });
