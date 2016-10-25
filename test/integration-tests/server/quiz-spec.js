@@ -13,8 +13,8 @@ describe('Quiz Functionalities', () => {
         request(HOST)
           .post('/quiz')
           .set('Accept', /application\/json/)
-          .expect(({ body }) => body.should.exist)
-          .end(done);
+          .send({ title: 'this', description: 'A same quiz', questions: ['hello?'] })
+          .expect(200, done);
       });
 
       it('adds another row to the current table', (done) => {
@@ -33,7 +33,15 @@ describe('Quiz Functionalities', () => {
           .get('/quiz')
           .expect('Content-Type', /application\/json/)
           .expect(({ body }) => {
-            body[0].should.have.all.keys('_id', 'title', 'description', 'createdAt', 'updatedAt');
+            body[0].should.have.all.keys(
+              '_id',
+              'title',
+              'description',
+              'questions',
+              'createdAt',
+              'updatedAt'
+            );
+            body[0].questions.should.be.an('array');
           })
           .end(done);
       });
