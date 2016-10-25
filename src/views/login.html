@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Login</title>
+</head>
+
+<body>
+	<form id="login-form">
+		<input type="text" name="username">
+		<input type="text" name="password">
+		<button id="submit" type="submit">Login</button>
+	</form>
+
+	<script>
+		const loginFormEl = document.getElementById('login-form');
+		
+		loginFormEl.addEventListener('click', e => {
+			fetch('http://localhost:3000/login', { method: 'POST' })
+				.then(status => {
+					if (status.ok) window.location = '/';
+					else {
+						// TODO: Some error handling
+					}
+				})
+				.catch(err => {
+					// TODO: Some error handling
+				});
+			e.preventDefault();
+		});
+	</script>
+</body>
+
+</html>
