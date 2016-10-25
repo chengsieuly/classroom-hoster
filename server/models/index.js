@@ -32,7 +32,7 @@ const sequelize = new Sequelize(
 // NOTE: Using force is dangerous! This will literally wipe all your data
 // from your database if any row is off
 // However, great for testing...
-sequelize.sync({ force: true });
+// sequelize.sync({ force: true });
 
 sequelize
   .authenticate()
