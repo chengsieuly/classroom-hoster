@@ -7,10 +7,11 @@ userController.find = function (req, res, next) {
   models.User
     .find({ username })
     .then((user) => {
+      if (!user) res.status(400).end();
       req._user = user;
       next();
     })
-    .catch(() => res.status(400).json({ error: 'Error getting user' }));
+    .catch(() => res.status(500).end());
 };
 
 module.exports = userController;
