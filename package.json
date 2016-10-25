@@ -36,10 +36,12 @@
     "sinon": "^1.17.6",
     "supertest": "^2.0.1",
     "webpack": "^2.1.0-beta.25",
-    "webpack-dev-server": "^2.1.0-beta.9"
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-dev-server": "^2.1.0-beta.9",
+    "webpack-hot-middleware": "^2.13.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"nodemon server/server.js\" \"node server-webpack.js\"",
+    "start": "concurrently --kill-others \"nodemon server/server.js\" \"nodemon server-webpack.js\"",
     "test": "mocha --recursive --compilers js:babel-core/register --require ./test/setup.js"
   },
   "author": "Cheng Ly",

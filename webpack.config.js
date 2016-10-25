@@ -9,7 +9,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   // Where webpack should begin its bundling process
   entry: [
-    'webpack-dev-server/client?http://localhost:8080',
     './src/index',
   ],
 
