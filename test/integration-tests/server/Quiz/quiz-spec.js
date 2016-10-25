@@ -1,13 +1,30 @@
 /*
  * This tests all the methods that is required for the quiz to work
  **/
-import rp from 'request-promise';
-
 describe('Quiz Functionalities', () => {
   let length = 0;
-  rp(`${HOST}/quiz`)
-    .then(data => (length = JSON.parse(data).length))
-    .catch(err => console.error(err));
+  request(HOST)
+    .get('/quiz')
+    .end((err, res) => (length = res.body.length));
+
+  describe('POST', () => {
+    describe('New quizzes can be created', () => {
+      it('can post a new quiz to the database', (done) => {
+        request(HOST)
+          .post('/quiz')
+          .set('Accept', /application\/json/)
+          .expect(({ body }) => body.should.exist)
+          .end(done);
+      });
+
+      it('adds another row to the current table', (done) => {
+        request(HOST)
+          .get('/quiz')
+          .expect(({ body }) => body.should.have.length(length + 1))
+          .end(done);
+      });
+    });
+  });
 
   describe('GET', () => {
     describe('All quizzes can be fetched', () => {
@@ -19,16 +36,6 @@ describe('Quiz Functionalities', () => {
             body[0].should.have.all.keys('_id', 'title', 'description', 'createdAt', 'updatedAt');
           })
           .end(done);
-      });
-    });
-  });
-
-  describe('POST', () => {
-    describe('New quizzes can be created', () => {
-      it('adds another row to the current table', () => {
-        console.log(length);
-        // request(HOST)
-        // .post('/quiz')
       });
     });
   });
