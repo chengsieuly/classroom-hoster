@@ -13,11 +13,9 @@ quizController.all = function (req, res, next) {
 };
 
 quizController.create = function (req, res, next) {
+  const { title, description, questions } = req.body;
   models.Quiz
-    .create({
-      title: 'Hello world',
-      description: 'Testing the quiz',
-    })
+    .create({ title, description, questions })
     .then(() => next())
     .catch(() => res.status(500).end());
 };

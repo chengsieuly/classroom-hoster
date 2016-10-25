@@ -12,7 +12,9 @@
     "mysql2": "^1.1.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "sequelize": "^3.24.5"
+    "sequelize": "^3.24.5",
+    "sequelize-json": "^2.1.2",
+    "socket.io": "^1.5.1"
   },
   "devDependencies": {
     "babel": "^6.5.2",

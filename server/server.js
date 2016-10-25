@@ -7,6 +7,7 @@ const Quiz = require('./controllers/quizController');
 const app = express();
 
 // Middlewares
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
@@ -16,7 +17,7 @@ app.use((req, res, next) => {
 
 app.post('/login', User.find, (req, res) => res.json({ success: 'Login successful' }));
 
-app.get('/quiz', Quiz.all, (req, res) => res.send(req._quizzes));
+app.get('/quiz', Quiz.all, (req, res) => res.json(req._quizzes));
 
 app.post('/quiz', Quiz.create, (req, res) => res.json({ success: 'Quiz created' }));
 
