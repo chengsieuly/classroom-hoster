@@ -17,6 +17,6 @@ globals:
   HOST: true
 
 rules:
-  import/no-extraneous-dependencies:
-    - 2
-    - devDependencies: true
+  import/no-extraneous-dependencies: 'off'
+  import/no-unresolved: 'off'
+  import/extensions: 'off'

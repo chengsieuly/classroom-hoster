@@ -22,6 +22,10 @@ module.exports = {
 
   // Webpack will try to resolve extensions with these first if not provided
   resolve: {
+    modules: [
+      path.resolve(__dirname, 'src'),
+      'node_modules',
+    ],
     extensions: ['.js', '.jsx'],
   },
 
