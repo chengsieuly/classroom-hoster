@@ -20,3 +20,4 @@ rules:
   import/no-extraneous-dependencies: 'off'
   import/no-unresolved: 'off'
   import/extensions: 'off'
+  no-underscore-dangle: 'off'
