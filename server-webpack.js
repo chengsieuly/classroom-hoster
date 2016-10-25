@@ -1,5 +1,7 @@
 const path = require('path');
+const http = require('http');
 const express = require('express');
+const socket = require('socket.io');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -8,6 +10,8 @@ const config = require('./webpack.config');
 const compiler = webpack(config);
 
 const app = express();
+const server = http.createServer(app);
+const io = socket(server);
 
 app.use(webpackDevMiddleware(compiler, {
   proxy: {
@@ -30,7 +34,12 @@ app.use(webpackHotMiddleware(compiler, {
 
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'src/views/login.html')));
 
-app.listen(8080, 'localhost', (err) => {
+// io
+io.on('connection', (socket) => {
+  console.log('someone connected');
+});
+
+server.listen(8080, 'localhost', (err) => {
   if (err) return console.log(err);
   console.log('Listening at http://localhost:8080/');
 });
