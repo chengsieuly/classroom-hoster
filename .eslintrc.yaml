@@ -22,3 +22,6 @@ rules:
   import/extensions: 'off'
   no-underscore-dangle: 'off'
   react/forbid-prop-types: 'off'
+  class-methods-use-this: 'off'
+  react/jsx-no-bind: 'off'
+  react/jsx-closing-bracket-location: 'off'
