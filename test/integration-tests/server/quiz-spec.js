@@ -12,7 +12,7 @@ describe('Quiz Functionalities', () => {
       it('can post a new quiz to the database', (done) => {
         request(HOST)
           .post('/quiz')
-          .set('Accept', /application\/json/)
+          .set('Content-Type', /application\/json/)
           .send({ title: 'this', description: 'A same quiz', questions: ['hello?'] })
           .expect(200, done);
       });
