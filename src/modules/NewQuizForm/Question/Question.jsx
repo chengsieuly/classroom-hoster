@@ -6,7 +6,7 @@ const Question = ({ index, update }) => (
     <textarea
       className="form-control"
       id="question"
-      rows="3"
+      rows="7"
       onChange={update.bind(this, 'question', index)}
       />
   </div>

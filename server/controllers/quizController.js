@@ -2,6 +2,17 @@ const models = require('../models');
 
 const quizController = {};
 
+quizController.findOne = function (req, res, next) {
+  models.Quiz
+    .findById(req.params.id)
+    .then((quiz) => {
+      if (!quiz) return res.status(404).end();
+      req._quiz = quiz;
+      next();
+    })
+    .catch(() => res.status(500).end());
+};
+
 quizController.all = function (req, res, next) {
   models.Quiz
     .findAll()
@@ -21,4 +32,3 @@ quizController.create = function (req, res, next) {
 };
 
 module.exports = quizController;
-

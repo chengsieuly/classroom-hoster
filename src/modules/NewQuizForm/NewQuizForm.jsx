@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import Question from 'modules/NewQuizForm/Question/Question';
 
 export default class NewQuizForm extends Component {
@@ -46,6 +47,7 @@ export default class NewQuizForm extends Component {
       })
         .then(() => {
           // TODO: Handle success
+          browserHistory.push('/');
         })
         .catch(() => {
           // TODO: Error handling
@@ -57,7 +59,7 @@ export default class NewQuizForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleFormSubmit}>
+      <form className="container" onSubmit={this.handleFormSubmit}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input
@@ -87,8 +89,8 @@ export default class NewQuizForm extends Component {
             />
         ))}
 
-        <button type="button" onClick={this.addNewQuestion}>Add New Question</button>
-        <button>Save</button>
+        <button type="button" className="btn btn-secondary" onClick={this.addNewQuestion}>Add New Question</button>
+        <button className="btn btn-primary">Save</button>
       </form>
     );
   }
