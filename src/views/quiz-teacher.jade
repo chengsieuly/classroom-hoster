@@ -1,0 +1,69 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Quiz Teacher View
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css', integrity='sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi', crossorigin='anonymous')
+  body.container
+    h1.text-xs-center Professor View
+    h2.text-xs-center= quiz.title
+    p.text-xs-center= quiz.description
+
+    #accordion(role='tablist', aria-multiselectable='true')
+      each question, i in quiz.questions
+        - var _question = eval("("+question+")")
+        progress.progress.progress-striped.progress-animated(id= i, data-answer= _question.answer value='0', max='100')
+        .card
+          .card-header(id='heading#{i}', role='tab')
+            h5.mb-0
+              a(data-toggle='collapse', data-parent='#accordion', href='#collapse#{i}', aria-expanded='true', aria-controls='collapse#{i}')
+                h3 Question# #{i + 1}
+          .collapse.in(id='collapse#{i}' role='tabpanel', aria-labelledby='heading#{i}')
+            .card-block
+              p 
+                strong Q: #{_question.question}
+              p(id='total#{i}') total submits: 0
+              p(id='right#{i}') right answers: 0
+              p(id='wrong#{i}') wrong answers: 0
+              p(id='submitted#{i}') submits: {}
+
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', integrity='sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7', crossorigin='anonymous')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js', integrity='sha384-XTs3FgkjiBgo8qjEjBk0tGmf3wPrWtA6coPfQDfFEY8AnYJwjalXCiosYRBIBZX8', crossorigin='anonymous')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js', integrity='sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK', crossorigin='anonymous')
+    script(src='/socket.io/socket.io.js')
+    
+    script.
+      $('.collapse').collapse()
+
+      const questions = document.getElementsByClassName('progress');
+
+      // Store all answers
+      const answers = {}
+      const total = {}
+      const rightAnswers = {}
+      const wrongAnswers = {} 
+
+      const socket = io();
+      const room = io('#{namespace}')
+      room.on('update', ({ qId, choice }) => {
+        const question = document.getElementById(qId)
+        const oldValue = parseInt(question.value)
+        const answer = questions[qId].getAttribute('data-answer')
+
+        answers[qId] = answers[qId] || {} 
+        answers[qId][choice] = answers[qId][choice] + 1 || 1
+
+        // Calculate the new value of progress bar
+        total[qId] = total[qId] + 1 || 1
+        if (choice === answer) rightAnswers[qId] = rightAnswers[qId] + 1 || 1
+        else wrongAnswers[qId] = wrongAnswers[qId] + 1 || 1
+        if (rightAnswers[qId] > 0) question.value = (rightAnswers[qId] / total[qId]) * 100
+
+        // Update stats
+        document.getElementById(`total${qId}`).innerHTML = `total submits: ${total[qId]}`
+        document.getElementById(`right${qId}`).innerHTML = `right answers: ${rightAnswers[qId] || 0}, (${(rightAnswers[qId]/total[qId]) * 100 || 0}% }`
+        document.getElementById(`wrong${qId}`).innerHTML = `wrong answers: ${wrongAnswers[qId] || 0}, (${(wrongAnswers[qId]/total[qId]) * 100 || 0}% }`
+        document.getElementById(`submitted${qId}`).innerHTML = `submits: ${JSON.stringify(answers[qId])}`
+      })

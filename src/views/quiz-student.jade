@@ -1,0 +1,56 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    title Quiz Student View
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css', integrity='sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi', crossorigin='anonymous')
+    
+    style.
+      radio-down {
+        display: block;
+      }
+
+      input[type=radio] {
+        margin-right: 5px;
+      }
+
+      form-check-label, form-check-input {
+        display: block;
+      }
+
+      .question {
+        margin-bottom: 20px;
+      }
+  body.container
+    h1.text-xs-center Student View
+    h2.text-xs-center= quiz.title
+    p.text-xs-center= quiz.description
+
+      each question, qId in quiz.questions
+        .question
+          - var _question = eval("("+question+")")
+          h2= _question.question
+          each choice, aId in _question.choices
+            .radio-down
+              input(type='radio', class='choices' name=qId, value=aId, checked=false)
+              label #{aId}: #{choice}
+
+    script(src='/socket.io/socket.io.js')
+    script.
+      const socket = io();
+      const room = io('/#{quiz.id}')
+      const choices = document.getElementsByClassName('choices')
+
+      for (let i = 0; i < choices.length; i++) {
+        choices[i].addEventListener('click', e => {
+          const { name: qId, value: choice } = e.target
+            room.emit('update score', { qId, choice })
+            
+            for (let i = 0; i < choices.length; i++) {
+              const id = choices[i].name
+              if (id === qId) choices[i].setAttribute('disabled', true)
+            }
+        })
+      }
