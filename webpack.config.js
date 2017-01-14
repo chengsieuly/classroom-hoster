@@ -31,7 +31,7 @@ module.exports = {
   // This is where we put our loaders to tell webpack how to load certain files
   module: {
     loaders: [
-      { test: /\.jsx?/, loader: 'babel', include: path.join(__dirname, 'src') },
+      { test: /\.jsx?/, loader: 'babel-loader', include: path.join(__dirname, 'src') },
     ],
   },
 
